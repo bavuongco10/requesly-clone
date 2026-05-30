@@ -29,5 +29,6 @@ Hard rules:
 - Match Requestly's mental model: each rule has a type, a condition, an action,
   and an enabled flag.
 
-After your changes, run `npm run test -- --run` and `npm run build` and fix
-until both pass before reporting back. Keep your summary short.
+After your changes, run `npm run lint`, `npm run typecheck`,
+`npm run test -- --run`, and `npm run build`, and fix until all four pass before
+reporting back. Keep your summary short.

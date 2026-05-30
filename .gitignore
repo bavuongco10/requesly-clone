@@ -1,2 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build output (the loadable unpacked extension)
+dist/
+
+# Test / coverage artifacts
+coverage/
+playwright-report/
+test-results/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor / OS junk
+.DS_Store
+*.swp
+
+# Env
+.env
+.env.local
+
 # Override global ignore: track .claude for this project
 !.claude/

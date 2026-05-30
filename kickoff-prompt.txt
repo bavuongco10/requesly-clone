@@ -3,10 +3,12 @@ plan for this project. The subagents in .claude/agents/ are available to you.
 
 Step 1 — Scaffold (do this yourself, sequentially):
 Set up Vite + @crxjs/vite-plugin + React 18 + TypeScript (strict) + Tailwind +
-Vitest, with the npm scripts named in CLAUDE.md and the chrome.* APIs mocked in
-the test setup. Define the shared rule types in src/types/ and the
-chrome.storage.local layer. Get an empty build + empty test run + lint passing
-before writing any feature. Create PROGRESS.md and check off scaffolding.
+Vitest, plus Biome (lint/format) and Playwright (e2e). Wire up the npm scripts
+named in CLAUDE.md — dev, build, test, test:e2e, lint (biome check .),
+typecheck (tsc --noEmit) — and mock the chrome.* APIs in the Vitest setup.
+Define the shared rule types in src/types/ and the chrome.storage.local layer.
+Get an empty build + empty unit-test run + lint + typecheck passing before
+writing any feature. Create PROGRESS.md and check off scaffolding.
 
 Step 2 — Build features (delegate per the CLAUDE.md plan):
 Once the shared types + storage layer are green, dispatch @extension-engine for
@@ -15,13 +17,17 @@ the service worker / declarativeNetRequest rule engine / mocking, and
 directories and can run in parallel. Keep any changes to the shared types in
 your own hands so both agents stay in sync.
 
-After EVERY feature lands, invoke @test-runner to confirm tests + build + lint
-are green before advancing. After a feature is green, optionally invoke
-@code-reviewer for a read-only pass. Update PROGRESS.md each iteration.
+After EVERY feature lands, invoke @test-runner to confirm lint, typecheck,
+unit tests, and build are green. For any feature that affects network behavior
+(redirect, headers, block, replace, mock), also invoke @browser-verify to write
+and run the Playwright e2e test that loads dist/ and proves the rule fires in a
+real Chromium. After a feature is green, optionally invoke @code-reviewer for a
+read-only pass. Update PROGRESS.md and README.md each iteration.
 
 Rules:
-- Follow the autonomous loop in CLAUDE.md: implement -> test -> run
-  `npm run test -- --run` and `npm run build` -> fix until green -> next.
+- Follow the autonomous loop in CLAUDE.md: implement -> lint + typecheck +
+  unit tests + build (+ e2e for network features) -> fix until green -> commit
+  and push with a Conventional Commits message -> next.
 - Do NOT ask me questions unless you are genuinely blocked by a decision not
   covered in CLAUDE.md.
 - Treat PROGRESS.md as the source of truth; it is auto-reloaded after any

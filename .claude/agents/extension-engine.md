@@ -29,6 +29,7 @@ Hard rules:
 - Write Vitest unit tests for every engine function with the chrome.* APIs
   mocked. The engine is pure logic, so coverage here should be high.
 
-After your changes, run `npm run test -- --run` and `npm run build` and fix
-until both pass before reporting back. Report a short summary of what you
-built and any limitation you hit.
+After your changes, run `npm run lint`, `npm run typecheck`,
+`npm run test -- --run`, and `npm run build`, and fix until all four pass before
+reporting back. Report a short summary of what you built and any limitation you
+hit.

@@ -12,9 +12,9 @@ Source of truth across iterations. Update after every feature.
 - [x] Typecheck clean (`npm run typecheck` — tsc)
 
 ## Foundation (DO YOURSELF, sequential)
-- [ ] Shared rule types in `src/types/`
-- [ ] `chrome.storage.local` typed layer + tests
-- [ ] id allocator for dNR rule ids
+- [x] Shared rule types in `src/types/rules.ts` (discriminated union + guards)
+- [x] `chrome.storage.local` typed layer + tests (`src/storage/store.ts`, 15 tests)
+- [x] id allocator for dNR rule ids (`allocateDnrId`, monotonic)
 
 ## Features (delegate after foundation green)
 1. [ ] Rule data model + storage layer

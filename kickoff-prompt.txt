@@ -1,0 +1,33 @@
+Read CLAUDE.md fully — it is the spec, the rules, and the agent delegation
+plan for this project. The subagents in .claude/agents/ are available to you.
+
+Step 1 — Scaffold (do this yourself, sequentially):
+Set up Vite + @crxjs/vite-plugin + React 18 + TypeScript (strict) + Tailwind +
+Vitest, with the npm scripts named in CLAUDE.md and the chrome.* APIs mocked in
+the test setup. Define the shared rule types in src/types/ and the
+chrome.storage.local layer. Get an empty build + empty test run + lint passing
+before writing any feature. Create PROGRESS.md and check off scaffolding.
+
+Step 2 — Build features (delegate per the CLAUDE.md plan):
+Once the shared types + storage layer are green, dispatch @extension-engine for
+the service worker / declarativeNetRequest rule engine / mocking, and
+@ui-builder for the React popup + options pages — these touch different
+directories and can run in parallel. Keep any changes to the shared types in
+your own hands so both agents stay in sync.
+
+After EVERY feature lands, invoke @test-runner to confirm tests + build + lint
+are green before advancing. After a feature is green, optionally invoke
+@code-reviewer for a read-only pass. Update PROGRESS.md each iteration.
+
+Rules:
+- Follow the autonomous loop in CLAUDE.md: implement -> test -> run
+  `npm run test -- --run` and `npm run build` -> fix until green -> next.
+- Do NOT ask me questions unless you are genuinely blocked by a decision not
+  covered in CLAUDE.md.
+- Treat PROGRESS.md as the source of truth; it is auto-reloaded after any
+  context compaction, so keep it accurate.
+- Work continuously until the Definition of Done in CLAUDE.md is met.
+
+When done, STOP and give me: (a) how to load dist/ as an unpacked extension in
+Chrome, and (b) a manual test checklist for things tests can't verify (live
+network interception in the browser).

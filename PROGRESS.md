@@ -17,24 +17,56 @@ Source of truth across iterations. Update after every feature.
 - [x] id allocator for dNR rule ids (`allocateDnrId`, monotonic)
 
 ## Features (delegate after foundation green)
-1. [ ] Rule data model + storage layer
-2. [ ] Rule engine (UI rule -> dNR) + heavy tests
-3. [ ] Redirect rule (URL A -> B, regex substitution)
-4. [ ] Header modification (request + response)
-5. [ ] Block/cancel rule
-6. [ ] Replace rule (find/replace in URL)
-7. [ ] Mock response (redirect to data: URL)
+1. [x] Rule data model + storage layer
+2. [x] Rule engine (UI rule -> dNR) + heavy tests (`src/engine/ruleEngine.ts`, 24 tests)
+3. [~] Redirect rule — conversion done in engine (static url + regexSubstitution); SW sync pending
+4. [~] Header modification — conversion done (request+response, set/remove/append); SW sync pending
+5. [~] Block/cancel rule — conversion done; SW sync pending
+6. [~] Replace rule — conversion done (regex redirect, escaped from/to); SW sync pending
+7. [~] Mock response — conversion done (data: URL, sanitized contentType); SW sync pending
 8. [ ] Script/CSS injection (content script + chrome.scripting)
 9. [ ] Popup UI (list, toggle, active count)
 10. [ ] Options/dashboard (CRUD, groups, search)
-11. [ ] Import/export JSON
+11. [ ] Import/export JSON — storage layer done (validated import); UI pending
+
+Legend: [x] done · [~] engine/logic done, wiring/UI pending · [ ] not started
 
 ## Decisions & known limitations
-- (none yet)
+- **Mock statusCode is not enforceable.** MV3 dNR can't set a response body or
+  status; we redirect to a `data:` URL. The browser serves 200 for a data:
+  resource, so `mock.statusCode` is kept in the model for the UI but does not
+  affect the served response.
+- **Mock contentType is sanitized.** Active/markup types (text/html, svg+xml,
+  xhtml+xml, xml) are downgraded to text/plain to prevent content injection via
+  an imported malicious mock. `application/javascript`/`text/css` are allowed by
+  design (mock/inject features serve user-authored code).
+- **Replace rule = regex redirect.** A literal `from` is regex-escaped and
+  wrapped in `^(.*)…(.*)$`; `to` has backslashes escaped so it can't inject
+  backreferences. Substitution is `\1<to>\2`.
+- **Import is validated.** `importAll` rejects unknown rule types and malformed
+  shapes per item; only valid rules are persisted, with fresh ids.
+- **Security gate scope.** `npm run security` audits production deps only
+  (`--omit=dev`): the shipped `dist/` has 0 vulnerabilities. The 7 dev-only
+  advisories (rollup/esbuild/vite/vitest/@crxjs) don't ship and their only fix
+  is a breaking downgrade of the locked build tool.
 
 ## Definition of done
 - All 11 features implemented
 - Tests pass with meaningful engine + storage coverage
 - `npm run build` succeeds; `dist/` has valid MV3 manifest
 - `npm run lint` clean
+- Security checkpoint PASSES for every feature: `npm run security` clean +
+  `@security-reviewer` returns `SECURITY CHECKPOINT: PASS` on the diff
 - PROGRESS.md fully checked off
+
+## Security checkpoint (run per feature, before commit)
+After a feature is green and before committing, run the checkpoint (loop step 5):
+1. `npm run security` — `npm audit --audit-level=high`.
+2. Invoke `@security-reviewer` on the diff — audits MV3 threat model
+   (script/CSS injection, `data:` mock XSS, credential-header leakage, open
+   redirects, untrusted import validation, manifest least-privilege).
+3. Must end in `SECURITY CHECKPOINT: PASS`. A FAIL blocks the commit — fix and
+   re-run. Record the verdict per feature below.
+
+Verdicts log:
+- (none yet)

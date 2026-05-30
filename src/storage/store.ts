@@ -158,6 +158,67 @@ export async function allocateDnrId(): Promise<number> {
 
 // ---- Import / export ----------------------------------------------------
 
+const VALID_RULE_TYPES: ReadonlySet<string> = new Set<string>([
+  "redirect",
+  "modifyHeaders",
+  "block",
+  "replace",
+  "mock",
+  "inject",
+]);
+
+/**
+ * Validate one untrusted imported object as a Rule. Imported JSON is fully
+ * untrusted, so we reject anything whose `type` is unknown or whose required
+ * shape per type is missing/malformed before it can reach storage or the dNR
+ * engine. Returns true only for a structurally sound rule.
+ */
+function isValidImportedRule(value: unknown): value is Rule {
+  if (typeof value !== "object" || value === null) return false;
+  const r = value as Record<string, unknown>;
+  if (typeof r.type !== "string" || !VALID_RULE_TYPES.has(r.type)) return false;
+  if (typeof r.name !== "string") return false;
+  if (typeof r.enabled !== "boolean") return false;
+  if (typeof r.condition !== "object" || r.condition === null) return false;
+
+  switch (r.type) {
+    case "redirect":
+      return typeof r.redirect === "object" && r.redirect !== null;
+    case "replace":
+      return typeof r.from === "string" && typeof r.to === "string";
+    case "mock": {
+      const m = r.mock as Record<string, unknown> | undefined;
+      return (
+        typeof m === "object" &&
+        m !== null &&
+        typeof m.body === "string" &&
+        typeof m.contentType === "string" &&
+        typeof m.statusCode === "number"
+      );
+    }
+    case "inject": {
+      const inj = r.injection as Record<string, unknown> | undefined;
+      return (
+        typeof inj === "object" &&
+        inj !== null &&
+        (inj.language === "js" || inj.language === "css") &&
+        typeof inj.code === "string"
+      );
+    }
+    case "modifyHeaders":
+    case "block":
+      return true;
+    default:
+      return false;
+  }
+}
+
+function isValidImportedGroup(value: unknown): value is RuleGroup {
+  if (typeof value !== "object" || value === null) return false;
+  const g = value as Record<string, unknown>;
+  return typeof g.name === "string" && typeof g.enabled === "boolean";
+}
+
 /** Build a JSON-serializable export envelope of all rules + groups. */
 export async function exportAll(): Promise<RuleExport> {
   const state = await getState();
@@ -170,24 +231,32 @@ export async function exportAll(): Promise<RuleExport> {
 }
 
 /**
- * Import rules/groups from an export envelope. Fresh UI ids are assigned to
- * avoid collisions with existing rules, and timestamps are refreshed.
- * Returns the number of rules imported.
+ * Import rules/groups from an export envelope. Untrusted input is validated
+ * per item — unknown rule types and malformed shapes are dropped, not
+ * persisted. Fresh UI ids are assigned to avoid collisions and timestamps are
+ * refreshed. Returns the number of rules actually imported.
  */
 export async function importAll(data: RuleExport): Promise<number> {
-  if (data.version !== 1) {
-    throw new Error(`importAll: unsupported export version ${data.version}`);
+  if (!data || data.version !== 1) {
+    throw new Error(`importAll: unsupported export version ${data?.version}`);
+  }
+  if (!Array.isArray(data.rules) || !Array.isArray(data.groups)) {
+    throw new Error("importAll: malformed envelope (rules/groups must be arrays)");
   }
   const state = await getState();
   const ts = now();
   for (const g of data.groups) {
+    if (!isValidImportedGroup(g)) continue;
     state.groups.push({ ...g, id: newId(), createdAt: ts, updatedAt: ts });
   }
+  let imported = 0;
   for (const r of data.rules) {
+    if (!isValidImportedRule(r)) continue;
     state.rules.push({ ...r, id: newId(), createdAt: ts, updatedAt: ts });
+    imported += 1;
   }
   await setState(state);
-  return data.rules.length;
+  return imported;
 }
 
 // ---- Change subscription ------------------------------------------------

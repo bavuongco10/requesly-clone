@@ -9,7 +9,8 @@
     "test": "vitest",
     "test:e2e": "playwright test",
     "lint": "biome check .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "security": "npm audit --omit=dev --audit-level=high"
   },
   "dependencies": {
     "react": "^18.3.1",

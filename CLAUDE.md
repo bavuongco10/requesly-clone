@@ -71,8 +71,17 @@ change, follow this loop and do not stop until it's green:
 3. Run `npm run lint`, `npm run typecheck`, `npm run test -- --run`,
    `npm run build`, and — for network-affecting features — `npm run test:e2e`.
 4. If anything fails, read the output, fix it, and return to step 3.
-5. When all checks pass, commit and push (see Git workflow below), update
-   `PROGRESS.md` AND `README.md`, then advance to the next feature.
+5. **Security checkpoint (required before commit).** Once the feature is green,
+   run `npm run security` (npm audit) and invoke the `@security-reviewer`
+   subagent on the diff. It audits the change against the MV3 threat model
+   (script/CSS injection, `data:` mock XSS, credential-header leakage, open
+   redirects, untrusted import validation, manifest least-privilege) and ends
+   with `SECURITY CHECKPOINT: PASS` or `FAIL`. The feature is NOT done on a
+   FAIL — fix the findings and re-run the checkpoint until it PASSES. Note the
+   verdict in `PROGRESS.md`.
+6. When all checks pass AND the security checkpoint PASSES, commit and push
+   (see Git workflow below), update `PROGRESS.md` AND `README.md`, then advance
+   to the next feature.
 
 Maintain a `PROGRESS.md` file. After each feature, check it off and note any
 decisions or known limitations. This is your memory across iterations.
@@ -145,6 +154,10 @@ merge conflicts.
 - For features that affect network behavior, invoke `@browser-verify` to write
   and run the Playwright e2e test that loads `dist/` and confirms the rule
   actually fires in a real browser.
+- After a feature is green, invoke `@security-reviewer` as the security
+  checkpoint (step 5 of the loop). It is read-only, audits the diff against the
+  MV3 threat model, and must return `SECURITY CHECKPOINT: PASS` before you
+  commit. Treat a FAIL as a blocker, not a suggestion.
 - After a feature is green, optionally invoke `@code-reviewer` for a read-only pass.
 
 **Do NOT delegate** quick single-file fixes, changes to the shared types
@@ -163,6 +176,7 @@ shared source of truth across all agents.
 - `npm run test:e2e` — Playwright e2e: build, load `dist/` in Chromium, assert rules fire
 - `npm run lint` — `biome check .` (lint + format check); use `biome check --write .` to fix
 - `npm run typecheck` — `tsc --noEmit` (strict type-check; treat any error as a failure)
+- `npm run security` — `npm audit --audit-level=high` (dependency advisories; part of the security checkpoint)
 
 Set these up in `package.json` during scaffolding. Add Biome as the only
 linter/formatter (no ESLint, no Prettier).

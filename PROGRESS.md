@@ -69,4 +69,11 @@ After a feature is green and before committing, run the checkpoint (loop step 5)
    re-run. Record the verdict per feature below.
 
 Verdicts log:
-- (none yet)
+- Rule engine (dNR conversion) — PASS (mock contentType sanitized, replace `to`
+  escaped, import validated)
+- Service worker + injection — PASS (|| host-boundary hardened, injection runs
+  in page MAIN world, http/https gated)
+- Popup UI — PASS (no XSS sinks)
+- Options dashboard + import/export — PASS (untrusted import validated, all
+  content rendered as React text)
+- E2E + resourceTypes fix — PASS (positive-constraint guard prevents match-all)

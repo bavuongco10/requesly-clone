@@ -12,6 +12,7 @@ import {
   type ModifyHeadersRule,
   type RedirectRule,
   type ReplaceRule,
+  type ResourceType,
   type Rule,
   type RuleCondition,
   isBlockRule,
@@ -30,6 +31,29 @@ type DnrHeaderInfo = chrome.declarativeNetRequest.ModifyHeaderInfo;
 
 const DEFAULT_PRIORITY = 1;
 
+/**
+ * Default resource types applied when a rule doesn't specify any. dNR's own
+ * default EXCLUDES main_frame and sub_frame, so a rule with no resourceTypes
+ * would silently never affect page navigations — surprising for a Requestly
+ * user who expects "redirect site A to B" to redirect the page. We default to
+ * the full set so rules apply to navigations and sub-resources alike.
+ */
+const DEFAULT_RESOURCE_TYPES: ResourceType[] = [
+  "main_frame",
+  "sub_frame",
+  "stylesheet",
+  "script",
+  "image",
+  "font",
+  "object",
+  "xmlhttprequest",
+  "ping",
+  "csp_report",
+  "media",
+  "websocket",
+  "other",
+];
+
 /** Escape regex metacharacters so a literal substring can be used in a regexFilter. */
 export function escapeRegex(literal: string): string {
   return literal.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -38,7 +62,8 @@ export function escapeRegex(literal: string): string {
 /**
  * Map our RuleCondition to a dNR condition. Our `domains`/`excludedDomains`
  * map to dNR `requestDomains`/`excludedRequestDomains` (match the request's
- * destination). Only defined fields are included.
+ * destination). Only defined fields are included. When no resourceTypes are
+ * given we apply DEFAULT_RESOURCE_TYPES so rules match page navigations too.
  */
 export function buildDnrCondition(condition: RuleCondition): DnrCondition {
   const out: DnrCondition = {};
@@ -49,6 +74,8 @@ export function buildDnrCondition(condition: RuleCondition): DnrCondition {
   }
   if (condition.resourceTypes && condition.resourceTypes.length > 0) {
     out.resourceTypes = condition.resourceTypes as DnrCondition["resourceTypes"];
+  } else {
+    out.resourceTypes = DEFAULT_RESOURCE_TYPES as DnrCondition["resourceTypes"];
   }
   if (condition.requestMethods && condition.requestMethods.length > 0) {
     out.requestMethods = condition.requestMethods as DnrCondition["requestMethods"];
@@ -200,8 +227,17 @@ export function buildDnrRule(rule: Rule, dnrId: number): DnrRule | null {
 
   if (!action) return null;
 
-  // A dNR condition must constrain something; bail if it's entirely empty.
-  if (Object.keys(condition).length === 0) return null;
+  // A dNR condition must POSITIVELY constrain by URL or destination domain.
+  // resourceTypes is always present now (defaulted) and on its own matches
+  // every request; an excludedRequestDomains-only condition is also near
+  // match-all (everything except the exclusion), which combined with the
+  // main_frame default would let a block rule cancel nearly all traffic. So
+  // require a positive constraint (urlFilter / regexFilter / requestDomains).
+  const hasPositiveConstraint =
+    condition.urlFilter !== undefined ||
+    condition.regexFilter !== undefined ||
+    (condition.requestDomains?.length ?? 0) > 0;
+  if (!hasPositiveConstraint) return null;
 
   return {
     id: dnrId,

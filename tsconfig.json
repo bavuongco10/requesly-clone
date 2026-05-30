@@ -16,7 +16,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["chrome", "vitest/globals"]
+    "types": ["chrome", "node", "vitest/globals"]
   },
   "include": [
     "src",

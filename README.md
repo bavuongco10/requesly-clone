@@ -9,8 +9,10 @@ with Vite + `@crxjs/vite-plugin`, React 18, TypeScript (strict), Tailwind, and
 
 All core features are implemented and tested: the rule engine, the live
 browser wiring (rules sync to `declarativeNetRequest`; JS/CSS injection fires on
-matching pages), the popup, and the full options dashboard. See `PROGRESS.md`
-for the detailed checklist.
+matching pages), the popup, and the full options dashboard. A Playwright e2e
+suite loads the built `dist/` in a real Chromium and proves every
+network-affecting rule type (redirect, headers, block, replace, mock) actually
+fires. See `PROGRESS.md` for the detailed checklist.
 
 Implemented:
 

@@ -60,10 +60,12 @@ describe("buildDnrCondition", () => {
     expect(c.requestMethods).toEqual(["get", "post"]);
   });
 
-  it("omits empty arrays and undefined fields", () => {
+  it("defaults resourceTypes (incl. main_frame) when none are given, omits empty domain arrays", () => {
     const c = buildDnrCondition({ urlFilter: "||x.com", domains: [], resourceTypes: [] });
     expect(c.requestDomains).toBeUndefined();
-    expect(c.resourceTypes).toBeUndefined();
+    // No resourceTypes provided → full default set so page navigations match too.
+    expect(c.resourceTypes).toContain("main_frame");
+    expect(c.resourceTypes).toContain("xmlhttprequest");
     expect("regexFilter" in c).toBe(false);
   });
 });

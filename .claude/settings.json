@@ -1,0 +1,27 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Project state reload. CLAUDE.md holds the spec, rules, and agent delegation plan (already loaded). PROGRESS.md below is the authoritative record of what is done and what comes next — continue the autonomous loop from there.'; echo; echo '----- PROGRESS.md -----'; cat PROGRESS.md 2>/dev/null || echo '(PROGRESS.md not created yet — create it as the first step.)'; echo; echo '----- working tree -----'; git status --short 2>/dev/null"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "auto|manual",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "mkdir -p .claude/backups && cp \"$CLAUDE_TRANSCRIPT_PATH\" .claude/backups/last-transcript.jsonl 2>/dev/null || true",
+            "async": true
+          }
+        ]
+      }
+    ]
+  }
+}

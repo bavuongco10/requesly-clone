@@ -7,12 +7,12 @@ with Vite + `@crxjs/vite-plugin`, React 18, TypeScript (strict), Tailwind, and
 
 ## Status
 
-The rule engine and the live browser wiring are complete and tested — rules
-stored via the API are synced to `declarativeNetRequest` and JS/CSS injection
-fires on matching pages. The React UI (popup + dashboard) is in progress. See
-`PROGRESS.md` for the detailed checklist.
+All core features are implemented and tested: the rule engine, the live
+browser wiring (rules sync to `declarativeNetRequest`; JS/CSS injection fires on
+matching pages), the popup, and the full options dashboard. See `PROGRESS.md`
+for the detailed checklist.
 
-Implemented so far:
+Implemented:
 
 - Typed rule data model (redirect, header-modify, block, replace, mock, inject)
 - `chrome.storage.local` persistence layer with rule/group CRUD, a monotonic
@@ -23,6 +23,9 @@ Implemented so far:
 - Service worker that syncs stored rules to the live dNR engine on install,
   startup, and every storage change, and applies JS/CSS injection rules to
   matching pages via `chrome.scripting`
+- Popup: lists rules with a per-rule on/off toggle and an active-rule count
+- Options dashboard: full rule CRUD with per-type forms, rule groups, search,
+  and JSON import/export
 
 ## Develop
 

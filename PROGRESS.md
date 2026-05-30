@@ -26,8 +26,8 @@ Source of truth across iterations. Update after every feature.
 7. [x] Mock response — engine conversion + live dNR sync (sanitized data: URL)
 8. [x] Script/CSS injection (matcher + chrome.scripting via service worker)
 9. [x] Popup UI (list, toggle, active count) — shared useRules hook + Popup
-10. [ ] Options/dashboard (CRUD, groups, search)
-11. [ ] Import/export JSON — storage layer done (validated import); UI pending
+10. [x] Options/dashboard (CRUD, groups, search) — src/options/*
+11. [x] Import/export JSON — validated import + Blob export in the dashboard
 
 Legend: [x] done · [~] engine/logic done, wiring/UI pending · [ ] not started
 

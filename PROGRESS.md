@@ -19,12 +19,12 @@ Source of truth across iterations. Update after every feature.
 ## Features (delegate after foundation green)
 1. [x] Rule data model + storage layer
 2. [x] Rule engine (UI rule -> dNR) + heavy tests (`src/engine/ruleEngine.ts`, 24 tests)
-3. [~] Redirect rule — conversion done in engine (static url + regexSubstitution); SW sync pending
-4. [~] Header modification — conversion done (request+response, set/remove/append); SW sync pending
-5. [~] Block/cancel rule — conversion done; SW sync pending
-6. [~] Replace rule — conversion done (regex redirect, escaped from/to); SW sync pending
-7. [~] Mock response — conversion done (data: URL, sanitized contentType); SW sync pending
-8. [ ] Script/CSS injection (content script + chrome.scripting)
+3. [x] Redirect rule — engine conversion + live dNR sync
+4. [x] Header modification — engine conversion + live dNR sync
+5. [x] Block/cancel rule — engine conversion + live dNR sync
+6. [x] Replace rule — engine conversion + live dNR sync
+7. [x] Mock response — engine conversion + live dNR sync (sanitized data: URL)
+8. [x] Script/CSS injection (matcher + chrome.scripting via service worker)
 9. [ ] Popup UI (list, toggle, active count)
 10. [ ] Options/dashboard (CRUD, groups, search)
 11. [ ] Import/export JSON — storage layer done (validated import); UI pending

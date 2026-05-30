@@ -7,8 +7,10 @@ with Vite + `@crxjs/vite-plugin`, React 18, TypeScript (strict), Tailwind, and
 
 ## Status
 
-Foundation and rule engine are complete and tested. Service worker wiring and
-the React UI are in progress. See `PROGRESS.md` for the detailed checklist.
+The rule engine and the live browser wiring are complete and tested — rules
+stored via the API are synced to `declarativeNetRequest` and JS/CSS injection
+fires on matching pages. The React UI (popup + dashboard) is in progress. See
+`PROGRESS.md` for the detailed checklist.
 
 Implemented so far:
 
@@ -18,6 +20,9 @@ Implemented so far:
 - Rule engine: pure conversion of UI rule objects into `declarativeNetRequest`
   dynamic rules (redirect with regex substitution, request/response header
   modification, block, URL find/replace, and `data:`-URL mock responses)
+- Service worker that syncs stored rules to the live dNR engine on install,
+  startup, and every storage change, and applies JS/CSS injection rules to
+  matching pages via `chrome.scripting`
 
 ## Develop
 

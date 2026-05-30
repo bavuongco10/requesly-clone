@@ -42,9 +42,9 @@ export function GroupManager({ groups, reload }: GroupManagerProps) {
   return (
     <section
       aria-label="Rule groups"
-      className="flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4"
+      className="flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900"
     >
-      <h2 className="text-sm font-semibold text-gray-900">Groups</h2>
+      <h2 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Groups</h2>
 
       <div className="flex gap-2">
         <input
@@ -56,31 +56,31 @@ export function GroupManager({ groups, reload }: GroupManagerProps) {
           onKeyDown={(e) => {
             if (e.key === "Enter") void onAdd();
           }}
-          className="min-w-0 flex-1 rounded border border-gray-300 px-2 py-1 text-sm"
+          className="min-w-0 flex-1 rounded border border-gray-300 px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
         />
         <button
           type="button"
           onClick={onAdd}
           disabled={busy || name.trim().length === 0}
-          className="rounded bg-gray-900 px-3 py-1 text-sm font-medium text-white hover:bg-gray-700 disabled:opacity-50"
+          className="rounded bg-gray-900 px-3 py-1 text-sm font-medium text-white hover:bg-gray-700 disabled:opacity-50 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-300"
         >
           Add group
         </button>
       </div>
 
       {groups.length === 0 ? (
-        <p className="text-xs text-gray-400">No groups yet.</p>
+        <p className="text-xs text-gray-400 dark:text-gray-500">No groups yet.</p>
       ) : (
         <ul className="flex flex-col gap-1">
           {groups.map((g) => (
             <li key={g.id} className="flex items-center justify-between text-sm">
-              <span className="truncate text-gray-700">{g.name}</span>
+              <span className="truncate text-gray-700 dark:text-gray-200">{g.name}</span>
               <button
                 type="button"
                 onClick={() => onDelete(g.id)}
                 disabled={busy}
                 aria-label={`Delete group ${g.name}`}
-                className="rounded px-2 py-0.5 text-xs font-medium text-red-600 hover:bg-red-50 disabled:opacity-50"
+                className="rounded px-2 py-0.5 text-xs font-medium text-red-600 hover:bg-red-50 disabled:opacity-50 dark:text-red-400 dark:hover:bg-red-950"
               >
                 Delete
               </button>

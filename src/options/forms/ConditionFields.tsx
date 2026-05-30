@@ -32,8 +32,10 @@ export function ConditionFields({ draft, onChange }: ConditionFieldsProps) {
   };
 
   return (
-    <fieldset className="flex flex-col gap-3 rounded border border-gray-200 p-3">
-      <legend className="px-1 text-sm font-semibold text-gray-700">Condition</legend>
+    <fieldset className="flex flex-col gap-3 rounded border border-gray-200 p-3 dark:border-gray-700">
+      <legend className="px-1 text-sm font-semibold text-gray-700 dark:text-gray-200">
+        Condition
+      </legend>
 
       <div className="flex gap-4 text-sm">
         <label className="flex items-center gap-1.5">
@@ -58,26 +60,26 @@ export function ConditionFields({ draft, onChange }: ConditionFieldsProps) {
 
       {draft.matchKind === "url" ? (
         <label className="flex flex-col gap-1 text-sm">
-          <span className="text-gray-600">URL filter</span>
+          <span className="text-gray-600 dark:text-gray-400">URL filter</span>
           <input
             type="text"
             aria-label="URL filter"
             placeholder="||example.com/api"
             value={draft.urlFilter}
             onChange={(e) => onChange({ urlFilter: e.target.value })}
-            className="rounded border border-gray-300 px-2 py-1"
+            className="rounded border border-gray-300 px-2 py-1 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
           />
         </label>
       ) : (
         <label className="flex flex-col gap-1 text-sm">
-          <span className="text-gray-600">Regex filter</span>
+          <span className="text-gray-600 dark:text-gray-400">Regex filter</span>
           <input
             type="text"
             aria-label="Regex filter"
             placeholder="^https://example\\.com/(.*)$"
             value={draft.regexFilter}
             onChange={(e) => onChange({ regexFilter: e.target.value })}
-            className="rounded border border-gray-300 px-2 py-1 font-mono"
+            className="rounded border border-gray-300 px-2 py-1 font-mono dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
           />
         </label>
       )}
@@ -93,36 +95,38 @@ export function ConditionFields({ draft, onChange }: ConditionFieldsProps) {
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label className="flex flex-col gap-1 text-sm">
-          <span className="text-gray-600">Domains (comma-separated)</span>
+          <span className="text-gray-600 dark:text-gray-400">Domains (comma-separated)</span>
           <input
             type="text"
             aria-label="Domains"
             placeholder="example.com, api.example.com"
             value={draft.domains}
             onChange={(e) => onChange({ domains: e.target.value })}
-            className="rounded border border-gray-300 px-2 py-1"
+            className="rounded border border-gray-300 px-2 py-1 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
           />
         </label>
         <label className="flex flex-col gap-1 text-sm">
-          <span className="text-gray-600">Excluded domains</span>
+          <span className="text-gray-600 dark:text-gray-400">Excluded domains</span>
           <input
             type="text"
             aria-label="Excluded domains"
             placeholder="ads.example.com"
             value={draft.excludedDomains}
             onChange={(e) => onChange({ excludedDomains: e.target.value })}
-            className="rounded border border-gray-300 px-2 py-1"
+            className="rounded border border-gray-300 px-2 py-1 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
           />
         </label>
       </div>
 
       <details className="text-sm">
-        <summary className="cursor-pointer text-gray-600">
+        <summary className="cursor-pointer text-gray-600 dark:text-gray-400">
           Resource types &amp; request methods (optional)
         </summary>
         <div className="mt-2 flex flex-col gap-3">
           <div>
-            <p className="mb-1 text-xs font-medium text-gray-500">Resource types</p>
+            <p className="mb-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+              Resource types
+            </p>
             <div className="flex flex-wrap gap-2">
               {RESOURCE_TYPES.map((rt) => (
                 <label key={rt} className="flex items-center gap-1 text-xs">
@@ -137,7 +141,9 @@ export function ConditionFields({ draft, onChange }: ConditionFieldsProps) {
             </div>
           </div>
           <div>
-            <p className="mb-1 text-xs font-medium text-gray-500">Request methods</p>
+            <p className="mb-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+              Request methods
+            </p>
             <div className="flex flex-wrap gap-2">
               {REQUEST_METHODS.map((m) => (
                 <label key={m} className="flex items-center gap-1 text-xs">

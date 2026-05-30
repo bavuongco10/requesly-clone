@@ -53,15 +53,19 @@ function RuleRow({
   };
 
   return (
-    <li className="flex items-center justify-between gap-3 px-3 py-2 hover:bg-gray-50">
+    <li className="flex items-center justify-between gap-3 px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-800">
       <div className="min-w-0">
         <div className="flex items-center gap-2">
-          <p className="truncate text-sm font-medium text-gray-900">{rule.name}</p>
-          <span className="shrink-0 rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600">
+          <p className="truncate text-sm font-medium text-gray-900 dark:text-gray-100">
+            {rule.name}
+          </p>
+          <span className="shrink-0 rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-300">
             {TYPE_LABELS[rule.type]}
           </span>
         </div>
-        <p className="truncate text-xs text-gray-500">{conditionSummary(rule)}</p>
+        <p className="truncate text-xs text-gray-500 dark:text-gray-400">
+          {conditionSummary(rule)}
+        </p>
       </div>
 
       <div className="flex shrink-0 items-center gap-2">
@@ -72,7 +76,7 @@ function RuleRow({
           aria-pressed={rule.enabled}
           aria-label={`Toggle ${rule.name}`}
           className={`relative h-5 w-9 shrink-0 rounded-full transition-colors ${
-            rule.enabled ? "bg-emerald-500" : "bg-gray-300"
+            rule.enabled ? "bg-emerald-500" : "bg-gray-300 dark:bg-gray-600"
           } ${busy ? "opacity-50" : ""}`}
         >
           <span
@@ -85,7 +89,7 @@ function RuleRow({
           type="button"
           onClick={() => onEdit(rule)}
           aria-label={`Edit ${rule.name}`}
-          className="rounded border border-gray-300 px-2 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50"
+          className="rounded border border-gray-300 px-2 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800"
         >
           Edit
         </button>
@@ -94,7 +98,7 @@ function RuleRow({
           onClick={onDelete}
           disabled={busy}
           aria-label={`Delete ${rule.name}`}
-          className="rounded px-2 py-1 text-xs font-medium text-red-600 hover:bg-red-50 disabled:opacity-50"
+          className="rounded px-2 py-1 text-xs font-medium text-red-600 hover:bg-red-50 disabled:opacity-50 dark:text-red-400 dark:hover:bg-red-950"
         >
           Delete
         </button>
@@ -105,7 +109,11 @@ function RuleRow({
 
 export function RuleList({ rules, groups, onEdit, reload }: RuleListProps) {
   if (rules.length === 0) {
-    return <p className="px-3 py-8 text-center text-sm text-gray-500">No rules match.</p>;
+    return (
+      <p className="px-3 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+        No rules match.
+      </p>
+    );
   }
 
   const groupName = new Map(groups.map((g) => [g.id, g.name] as const));
@@ -130,12 +138,12 @@ export function RuleList({ rules, groups, onEdit, reload }: RuleListProps) {
       {sections.map((section) => (
         <div
           key={section.key || "ungrouped"}
-          className="rounded-lg border border-gray-200 bg-white"
+          className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900"
         >
-          <h3 className="border-b border-gray-100 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
+          <h3 className="border-b border-gray-100 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:border-gray-800 dark:text-gray-400">
             {section.label}
           </h3>
-          <ul className="divide-y divide-gray-100">
+          <ul className="divide-y divide-gray-100 dark:divide-gray-800">
             {(buckets.get(section.key) ?? []).map((rule) => (
               <RuleRow key={rule.id} rule={rule} onEdit={onEdit} reload={reload} />
             ))}

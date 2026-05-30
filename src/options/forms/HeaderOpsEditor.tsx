@@ -25,10 +25,10 @@ export function HeaderOpsEditor({ label, ops, onChange }: HeaderOpsEditorProps) 
   };
 
   return (
-    <fieldset className="rounded border border-gray-200 p-3">
-      <legend className="px-1 text-xs font-medium text-gray-600">{label}</legend>
+    <fieldset className="rounded border border-gray-200 p-3 dark:border-gray-700">
+      <legend className="px-1 text-xs font-medium text-gray-600 dark:text-gray-400">{label}</legend>
       {ops.length === 0 ? (
-        <p className="text-xs text-gray-400">No operations yet.</p>
+        <p className="text-xs text-gray-400 dark:text-gray-500">No operations yet.</p>
       ) : (
         <ul className="flex flex-col gap-2">
           {ops.map((op, index) => (
@@ -40,7 +40,7 @@ export function HeaderOpsEditor({ label, ops, onChange }: HeaderOpsEditorProps) 
                 placeholder="Header name"
                 value={op.header}
                 onChange={(e) => update(index, { header: e.target.value })}
-                className="min-w-0 flex-1 rounded border border-gray-300 px-2 py-1 text-sm"
+                className="min-w-0 flex-1 rounded border border-gray-300 px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
               />
               <select
                 aria-label={`${label} operation ${index + 1}`}
@@ -48,7 +48,7 @@ export function HeaderOpsEditor({ label, ops, onChange }: HeaderOpsEditorProps) 
                 onChange={(e) =>
                   update(index, { operation: e.target.value as HeaderOperation["operation"] })
                 }
-                className="rounded border border-gray-300 px-2 py-1 text-sm"
+                className="rounded border border-gray-300 px-2 py-1 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
               >
                 {OPERATIONS.map((o) => (
                   <option key={o} value={o}>
@@ -63,13 +63,13 @@ export function HeaderOpsEditor({ label, ops, onChange }: HeaderOpsEditorProps) 
                 value={op.value ?? ""}
                 disabled={op.operation === "remove"}
                 onChange={(e) => update(index, { value: e.target.value })}
-                className="min-w-0 flex-1 rounded border border-gray-300 px-2 py-1 text-sm disabled:bg-gray-100"
+                className="min-w-0 flex-1 rounded border border-gray-300 px-2 py-1 text-sm disabled:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500 dark:disabled:bg-gray-700"
               />
               <button
                 type="button"
                 onClick={() => remove(index)}
                 aria-label={`Remove ${label} operation ${index + 1}`}
-                className="rounded px-2 py-1 text-xs font-medium text-red-600 hover:bg-red-50"
+                className="rounded px-2 py-1 text-xs font-medium text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950"
               >
                 Remove
               </button>
@@ -80,7 +80,7 @@ export function HeaderOpsEditor({ label, ops, onChange }: HeaderOpsEditorProps) 
       <button
         type="button"
         onClick={add}
-        className="mt-2 rounded border border-gray-300 px-2 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50"
+        className="mt-2 rounded border border-gray-300 px-2 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800"
       >
         Add {label.toLowerCase()}
       </button>

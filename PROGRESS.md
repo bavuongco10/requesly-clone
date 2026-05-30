@@ -31,6 +31,12 @@ Source of truth across iterations. Update after every feature.
 
 Legend: [x] done · [~] engine/logic done, wiring/UI pending · [ ] not started
 
+## Extras (post-spec)
+- [x] Extension icons (16/32/48/128 PNG) in manifest + action default_icon
+- [x] Dark mode — Tailwind `class` strategy, persisted theme pref
+  (light/dark/system) in chrome.storage.local, shared `useTheme` hook +
+  toggle in popup and dashboard, live across surfaces and OS changes
+
 ## Decisions & known limitations
 - **Mock statusCode is not enforceable.** MV3 dNR can't set a response body or
   status; we redirect to a `data:` URL. The browser serves 200 for a data:

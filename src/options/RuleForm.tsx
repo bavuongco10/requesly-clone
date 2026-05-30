@@ -58,16 +58,16 @@ export function RuleForm({ editing, groups, onSaved, onCancel }: RuleFormProps) 
   return (
     <section
       aria-label={editing ? "Edit rule" : "Create rule"}
-      className="flex flex-col gap-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
+      className="flex flex-col gap-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-900"
     >
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-900">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
           {editing ? "Edit rule" : "New rule"}
         </h2>
         <button
           type="button"
           onClick={onCancel}
-          className="rounded px-2 py-1 text-sm text-gray-500 hover:bg-gray-100"
+          className="rounded px-2 py-1 text-sm text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
         >
           Close
         </button>
@@ -75,18 +75,18 @@ export function RuleForm({ editing, groups, onSaved, onCancel }: RuleFormProps) 
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label className="flex flex-col gap-1 text-sm">
-          <span className="text-gray-600">Name</span>
+          <span className="text-gray-600 dark:text-gray-400">Name</span>
           <input
             type="text"
             aria-label="Rule name"
             value={draft.name}
             onChange={(e) => patch({ name: e.target.value })}
-            className="rounded border border-gray-300 px-2 py-1"
+            className="rounded border border-gray-300 px-2 py-1 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500"
           />
         </label>
 
         <label className="flex flex-col gap-1 text-sm">
-          <span className="text-gray-600">Type</span>
+          <span className="text-gray-600 dark:text-gray-400">Type</span>
           <select
             aria-label="Rule type"
             value={draft.type}
@@ -96,7 +96,7 @@ export function RuleForm({ editing, groups, onSaved, onCancel }: RuleFormProps) 
               const next = e.target.value as RuleType;
               setDraft((d) => ({ ...emptyDraft(next), ...carryOver(d) }));
             }}
-            className="rounded border border-gray-300 px-2 py-1 disabled:bg-gray-100"
+            className="rounded border border-gray-300 px-2 py-1 disabled:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:disabled:bg-gray-700"
           >
             {RULE_TYPES.map((t) => (
               <option key={t} value={t}>
@@ -118,12 +118,12 @@ export function RuleForm({ editing, groups, onSaved, onCancel }: RuleFormProps) 
         </label>
 
         <label className="flex items-center gap-2 text-sm">
-          <span className="text-gray-600">Group</span>
+          <span className="text-gray-600 dark:text-gray-400">Group</span>
           <select
             aria-label="Rule group"
             value={draft.groupId}
             onChange={(e) => patch({ groupId: e.target.value })}
-            className="rounded border border-gray-300 px-2 py-1"
+            className="rounded border border-gray-300 px-2 py-1 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
           >
             <option value="">No group</option>
             {groups.map((g) => (
@@ -139,7 +139,7 @@ export function RuleForm({ editing, groups, onSaved, onCancel }: RuleFormProps) 
       <TypeFields draft={draft} onChange={patch} />
 
       {error ? (
-        <p role="alert" className="text-sm font-medium text-red-600">
+        <p role="alert" className="text-sm font-medium text-red-600 dark:text-red-400">
           {error}
         </p>
       ) : null}
@@ -156,7 +156,7 @@ export function RuleForm({ editing, groups, onSaved, onCancel }: RuleFormProps) 
         <button
           type="button"
           onClick={onCancel}
-          className="rounded border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="rounded border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800"
         >
           Cancel
         </button>

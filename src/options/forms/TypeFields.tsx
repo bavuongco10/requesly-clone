@@ -9,8 +9,10 @@ interface TypeFieldsProps {
   onChange: (patch: Partial<RuleDraft>) => void;
 }
 
-const inputCls = "rounded border border-gray-300 px-2 py-1";
+const inputCls =
+  "rounded border border-gray-300 px-2 py-1 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500";
 const labelCls = "flex flex-col gap-1 text-sm";
+const spanCls = "text-gray-600 dark:text-gray-400";
 
 export function TypeFields({ draft, onChange }: TypeFieldsProps) {
   switch (draft.type) {
@@ -18,7 +20,7 @@ export function TypeFields({ draft, onChange }: TypeFieldsProps) {
       return (
         <div className="flex flex-col gap-3">
           <label className={labelCls}>
-            <span className="text-gray-600">Redirect to URL</span>
+            <span className={spanCls}>Redirect to URL</span>
             <input
               type="text"
               aria-label="Redirect URL"
@@ -29,7 +31,7 @@ export function TypeFields({ draft, onChange }: TypeFieldsProps) {
             />
           </label>
           <label className={labelCls}>
-            <span className="text-gray-600">Regex substitution (needs a regex filter)</span>
+            <span className={spanCls}>Regex substitution (needs a regex filter)</span>
             <input
               type="text"
               aria-label="Regex substitution"
@@ -60,7 +62,7 @@ export function TypeFields({ draft, onChange }: TypeFieldsProps) {
 
     case "block":
       return (
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 dark:text-gray-400">
           Matching requests will be blocked. No extra configuration needed.
         </p>
       );
@@ -69,7 +71,7 @@ export function TypeFields({ draft, onChange }: TypeFieldsProps) {
       return (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <label className={labelCls}>
-            <span className="text-gray-600">Find (from)</span>
+            <span className={spanCls}>Find (from)</span>
             <input
               type="text"
               aria-label="Replace from"
@@ -80,7 +82,7 @@ export function TypeFields({ draft, onChange }: TypeFieldsProps) {
             />
           </label>
           <label className={labelCls}>
-            <span className="text-gray-600">Replace with (to)</span>
+            <span className={spanCls}>Replace with (to)</span>
             <input
               type="text"
               aria-label="Replace to"
@@ -98,7 +100,7 @@ export function TypeFields({ draft, onChange }: TypeFieldsProps) {
         <div className="flex flex-col gap-3">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <label className={labelCls}>
-              <span className="text-gray-600">Status code</span>
+              <span className={spanCls}>Status code</span>
               <input
                 type="number"
                 aria-label="Mock status code"
@@ -108,7 +110,7 @@ export function TypeFields({ draft, onChange }: TypeFieldsProps) {
               />
             </label>
             <label className={labelCls}>
-              <span className="text-gray-600">Content-Type</span>
+              <span className={spanCls}>Content-Type</span>
               <input
                 type="text"
                 aria-label="Mock content type"
@@ -119,7 +121,7 @@ export function TypeFields({ draft, onChange }: TypeFieldsProps) {
             </label>
           </div>
           <label className={labelCls}>
-            <span className="text-gray-600">Response body</span>
+            <span className={spanCls}>Response body</span>
             <textarea
               aria-label="Mock body"
               rows={6}
@@ -136,7 +138,7 @@ export function TypeFields({ draft, onChange }: TypeFieldsProps) {
         <div className="flex flex-col gap-3">
           <div className="flex flex-wrap gap-3">
             <label className={labelCls}>
-              <span className="text-gray-600">Language</span>
+              <span className={spanCls}>Language</span>
               <select
                 aria-label="Injection language"
                 value={draft.language}
@@ -148,7 +150,7 @@ export function TypeFields({ draft, onChange }: TypeFieldsProps) {
               </select>
             </label>
             <label className={labelCls}>
-              <span className="text-gray-600">Run at</span>
+              <span className={spanCls}>Run at</span>
               <select
                 aria-label="Injection run at"
                 value={draft.runAt}
@@ -162,7 +164,7 @@ export function TypeFields({ draft, onChange }: TypeFieldsProps) {
             </label>
           </div>
           <label className={labelCls}>
-            <span className="text-gray-600">Code</span>
+            <span className={spanCls}>Code</span>
             <textarea
               aria-label="Injection code"
               rows={8}

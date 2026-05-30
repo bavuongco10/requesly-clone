@@ -76,18 +76,18 @@ export function ImportExport({ reload }: ImportExportProps) {
   return (
     <section
       aria-label="Import and export"
-      className="flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4"
+      className="flex flex-col gap-3 rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900"
     >
-      <h2 className="text-sm font-semibold text-gray-900">Import / Export</h2>
+      <h2 className="text-sm font-semibold text-gray-900 dark:text-gray-100">Import / Export</h2>
       <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
           onClick={onExport}
-          className="rounded border border-gray-300 px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="rounded border border-gray-300 px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800"
         >
           Export JSON
         </button>
-        <label className="rounded border border-gray-300 px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50">
+        <label className="rounded border border-gray-300 px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800">
           Import JSON
           <input
             ref={fileRef}
@@ -106,7 +106,9 @@ export function ImportExport({ reload }: ImportExportProps) {
         <p
           role={status.kind === "error" ? "alert" : "status"}
           className={`text-sm font-medium ${
-            status.kind === "error" ? "text-red-600" : "text-emerald-600"
+            status.kind === "error"
+              ? "text-red-600 dark:text-red-400"
+              : "text-emerald-600 dark:text-emerald-400"
           }`}
         >
           {status.message}

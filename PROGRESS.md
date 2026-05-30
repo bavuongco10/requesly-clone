@@ -25,7 +25,7 @@ Source of truth across iterations. Update after every feature.
 6. [x] Replace rule — engine conversion + live dNR sync
 7. [x] Mock response — engine conversion + live dNR sync (sanitized data: URL)
 8. [x] Script/CSS injection (matcher + chrome.scripting via service worker)
-9. [ ] Popup UI (list, toggle, active count)
+9. [x] Popup UI (list, toggle, active count) — shared useRules hook + Popup
 10. [ ] Options/dashboard (CRUD, groups, search)
 11. [ ] Import/export JSON — storage layer done (validated import); UI pending
 
